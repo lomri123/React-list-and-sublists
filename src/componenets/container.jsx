@@ -82,7 +82,6 @@ class Container extends Component {
           });
       });
     });
-    console.log(sortedObj2);
     return sortedObj2;
   };
   //*2 - setting default values to selected_country, selected_city, selected_company and Address into the this.state
@@ -113,9 +112,7 @@ class Container extends Component {
   }
 
   //handle onClick when user presses a country or city on the list (columns 1 + 2)
-  handleClick = e => {
-    const value = e.target.getAttribute("data-value");
-    const stage = e.target.getAttribute("data-stage");
+  handleClick = (value, stage) => {
     if (stage === "country") {
       let defaultCity = Object.keys(this.state.objParsedComp[value])[0];
       this.setState({ selected_city: defaultCity });
@@ -124,8 +121,7 @@ class Container extends Component {
     this.setState({ [stateChange]: value });
   };
   //handle onClick when user presses a company on the list (column 3)
-  handleCompanyClick = async e => {
-    const value = e.target.getAttribute("data-value");
+  handleCompanyClick = async value => {
     let street = this.state.objParsedComp[this.state.selected_country][
       this.state.selected_city
     ][value];
@@ -147,9 +143,8 @@ class Container extends Component {
           this.state.selected_country === country ? "list-selected" : ""
         }`}
         key={country}
-        onClick={this.handleClick}
+        onClick={this.handleClick.bind(this, country, "country")}
         data-value={country}
-        data-stage="country"
       >
         {country}
       </li>
@@ -166,9 +161,8 @@ class Container extends Component {
           this.state.selected_city === city ? "list-selected" : ""
         }`}
         key={city}
-        onClick={this.handleClick}
+        onClick={this.handleClick.bind(this, city, "city")}
         data-value={city}
-        data-stage="city"
       >
         {city}
       </li>
@@ -187,9 +181,8 @@ class Container extends Component {
           this.state.selected_company === company ? "list-selected" : ""
         }`}
         key={company}
-        onClick={this.handleCompanyClick}
+        onClick={this.handleCompanyClick.bind(this, company)}
         data-value={company}
-        data-stage="company"
       >
         {company}
       </li>
